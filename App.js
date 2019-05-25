@@ -8,15 +8,7 @@ export default class App extends React.Component {
         super(props)
         this.state = {
             author: '',
-            results: [{
-                id: "abc",
-                volumeInfo: {
-                    title: "Titre du livre",
-                    infoLink: "https://google.fr",
-                    publishedDate: "2019-06-01",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore."
-                }
-            }],
+            results: [],
             loading: false
         }
     }

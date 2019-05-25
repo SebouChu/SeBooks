@@ -21,6 +21,10 @@ export default class App extends React.Component {
                 .then(responseJSON => {
                     this.setState({ results: responseJSON.items, loading: false })
                 })
+                .catch(error => {
+                    this.setState({ loading: false })
+                    console.error(error);
+                })
     }
 
     _renderLoading() {

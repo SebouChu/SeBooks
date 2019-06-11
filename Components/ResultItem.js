@@ -1,33 +1,32 @@
 import React from 'react'
-import { Image, Linking, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 export default class ResultItem extends React.Component {
-    excerptFor(text = "") {
-        var excerpt = text.slice(0, 100);
-        if (text.length > 100) {
-            excerpt += "..."
-        }
+    getCoverUrl() {
+        return this.props.book.volumeInfo.imageLinks !== undefined  ? this.props.book.volumeInfo.imageLinks.thumbnail
+                                                                    : "https://via.placeholder.com/128x210.png?text=No%20image"
+    }
 
-        return excerpt;
+    getTitle() {
+        return this.props.book.volumeInfo.title
+    }
+
+    getPublicationYear() {
+        return new Date(this.props.book.volumeInfo.publishedDate).getFullYear()
     }
 
     render() {
         return (
-            <View style={ styles.mainContainer }>
+            <TouchableOpacity style={ styles.mainContainer } onPress={this.props.detailLink}>
                 <Image
-                    source={{uri: this.props.coverUrl }}
+                    source={{uri: this.getCoverUrl() }}
                     style={ styles.coverImage } />
-                <View style={ styles.contentContainer }>
-                    <View style={ styles.titleContainer }>
-                        <Text style={ styles.titleText } onPress={() => Linking.openURL(this.props.storeUrl)}>
-                            { this.props.title } ({ this.props.publicationYear })
-                        </Text>
-                    </View>
-                    <View style={ styles.descriptionContainer }>
-                        <Text>{ this.excerptFor(this.props.description) }</Text>
-                    </View>
+                <View style={ styles.titleContainer }>
+                    <Text style={ styles.titleText }>
+                        { this.getTitle() } ({ this.getPublicationYear() })
+                    </Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         padding: 5,
         justifyContent: 'space-between',
+        alignItems: 'center',
         borderBottomWidth: 1,
         borderBottomColor: 'lightgray'
     },
@@ -46,18 +46,12 @@ const styles = StyleSheet.create({
         width: 128,
         height: 210
     },
-    contentContainer: {
-        flex: 1,
-        marginLeft: 5
-    },
     titleContainer: {
-        flex: 1
+        flex: 1,
+        paddingLeft: 5
     },
     titleText: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold'
-    },
-    descriptionContainer: {
-        flex: 2
     }
 })

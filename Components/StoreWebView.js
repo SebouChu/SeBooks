@@ -1,26 +1,10 @@
 import React from 'react'
-
 import { StyleSheet, View, WebView } from 'react-native'
+import { connect } from 'react-redux'
 
-export default class StoreWebView extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            title: props.navigation.getParam('title', null),
-            storeUrl: props.navigation.getParam('storeUrl', null)
-        }
-    }
-
-    render() {
-        return (
-            <View style={ styles.mainContainer }>
-                <WebView
-                    style={ styles.storeWebView }
-                    scalesPageToFit
-                    startInLoadingState
-                    source={{ uri: this.state.storeUrl }} />
-            </View>
-        )
+const mapStateToProps = (state) => {
+    return {
+        book: state.book
     }
 }
 
@@ -30,3 +14,19 @@ const styles = StyleSheet.create({
         padding: 5
     }
 })
+
+class StoreWebView extends React.Component {
+    render() {
+        return (
+            <View style={ styles.mainContainer }>
+                <WebView
+                    style={ styles.storeWebView }
+                    scalesPageToFit
+                    startInLoadingState
+                    source={{ uri: this.props.book.volumeInfo.infoLink }} />
+            </View>
+        )
+    }
+}
+
+export default connect(mapStateToProps)(StoreWebView)

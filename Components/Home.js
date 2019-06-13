@@ -2,6 +2,7 @@ import React from 'react'
 import { ActivityIndicator, Button, FlatList, Keyboard, StyleSheet, Text, TextInput, View } from 'react-native'
 
 import ResultItem from './ResultItem'
+import MussoResults from './Fixtures/Musso'
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -13,8 +14,11 @@ export default class Home extends React.Component {
         }
     }
 
-    onPressSearchBtn() {
-        console.log(`Let's search with author name: ${this.state.author}`)
+    loadLocalResults() {
+        this.setState({ results: MussoResults.items, loading: false })
+    }
+
+    searchAuthor(author) {
         var url = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${this.state.author}`
         this.setState({ results: [], loading: true });
         fetch(url).then(response => response.json())
@@ -25,6 +29,13 @@ export default class Home extends React.Component {
                     this.setState({ loading: false })
                     console.error(error);
                 })
+    }
+
+    onPressSearchBtn() {
+        console.log(`Let's search with author name: ${this.state.author}`)
+
+        // this.searchAuthor(this.state.author)
+        this.loadLocalResults()
     }
 
     _renderLoading() {
